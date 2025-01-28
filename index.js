@@ -1,40 +1,53 @@
-const url =
-	'https://api.openweathermap.org/data/2.5/weather';
-const apiKey =
-	'f00c38e0279b7bc85480c3fe775d518c';
+const apiKey = 'b60591ab77e416fa0ef96921292f9fce';  // Replace with your OpenWeatherMap API key
 
-$(document).ready(function () {
-	weatherFn('Pune');
-});
-
-async function weatherFn(cName) {
-	const temp =
-		`${url}?q=${cName}&appid=${apiKey}&units=metric`;
-	try {
-		const res = await fetch(temp);
-		const data = await res.json();
-		if (res.ok) {
-			weatherShowFn(data);
-		} else {
-			alert('City not found. Please try again.');
-		}
-	} catch (error) {
-		console.error('Error fetching weather data:', error);
-	}
+// Fetch Weather by City Name
+async function getWeatherByCity() {
+    const city = document.getElementById('city').value;
+    if (!city) {
+        alert('Please enter a city name.');
+        return;
+    }
+    fetchWeather(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
 }
 
-function weatherShowFn(data) {
-	$('#city-name').text(data.name);
-	$('#date').text(moment().
-		format('MMMM Do YYYY, h:mm:ss a'));
-	$('#temperature').
-		html(`${data.main.temp}°C`);
-	$('#description').
-		text(data.weather[0].description);
-	$('#wind-speed').
-		html(`Wind Speed: ${data.wind.speed} m/s`);
-	$('#weather-icon').
-		attr('src',
-			`...`);
-	$('#weather-info').fadeIn();
+// Fetch Weather by User's Location
+function getWeatherByLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+            const { latitude, longitude } = position.coords;
+            fetchWeather(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`);
+        }, () => {
+            alert('Unable to access location. Please enable location services.');
+        });
+    } else {
+        alert('Geolocation is not supported by this browser.');
+    }
+}
+
+// Fetch Data from API
+async function fetchWeather(url) {
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.cod !== 200) {
+            alert('City not found.');
+            return;
+        }
+
+        displayWeather(data);
+    } catch (error) {
+        alert('Error fetching weather data.');
+    }
+}
+
+// Display Weather Data
+function displayWeather(data) {
+    document.getElementById('location-name').textContent = data.name;
+    document.getElementById('temperature').textContent = Math.round(data.main.temp);
+    document.getElementById('weather-description').textContent = data.weather[0].description;
+    document.getElementById('humidity').textContent = data.main.humidity;
+    document.getElementById('wind-speed').textContent = data.wind.speed;
+
+    document.getElementById('weather-info').style.display = 'block';
 }
