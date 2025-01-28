@@ -1,47 +1,33 @@
 <!DOCTYPE html>
-
+<html lang="en">
 <head>
-	<link rel="stylesheet" href="style2.css">
-	<link rel="stylesheet" href=
-"https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-	<link rel="stylesheet" href=
-"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-	<title>GFG App</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Information</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-	<div class="container">
-		<div class="weather-card">
-			<h1 style="color: green;">
-				WEATHER REPORT
-			</h1>
-			<h3>
-				Weather App
-			</h3>
-			<input type="text" id="city-input"
-				placeholder="Enter city name">
-			<button id="city-input-btn"
-					onclick="weatherFn($('#city-input').val())">
-					Get Weather
-			</button>
-			<div id="weather-info"
-				class="animate__animated animate__fadeIn">
-				<h3 id="city-name"></h3>
-				<p id="date"></p>
-				<p id="weather-icon"></p>
-				<p id="temperature"></p>
-				<p id="description"></p>
-				<p id="wind-speed"></p>
-			</div>
-		</div>
-	</div>
-	<script src=
-"https://code.jquery.com/jquery-3.6.0.min.js">
-	</script>
-	<script src=
-"https://momentjs.com/downloads/moment.min.js">
-	</script>
-	<script src="script2.js"></script>
-</body>
 
+    <div class="weather-container">
+        <h1>Weather App</h1>
+        <input type="text" id="city" placeholder="Enter city name">
+        <button onclick="getWeatherByCity()">Search</button>
+        <button onclick="getWeatherByLocation()">Use My Location</button>
+
+        <div id="weather-info" class="weather-info" style="display: none;">
+            <h2 id="location-name"></h2>
+            <div class="temp-info">
+                <p><span id="temperature"></span>°C</p>
+                <p id="weather-description"></p>
+            </div>
+            <div class="extra-info">
+                <p>Humidity: <span id="humidity"></span>%</p>
+                <p>Wind Speed: <span id="wind-speed"></span> km/h</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
 </html>
